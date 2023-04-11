@@ -20,7 +20,6 @@ router.post("/add-category", async (req, res) => {
 router.get("/get-all-categories", async (req, res) => {
     try {
         const categories = await Category.find().sort({
-            createdAt: -1
         })
         res.status(200).json(categories)
     }

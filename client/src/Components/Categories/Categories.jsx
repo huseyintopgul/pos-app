@@ -39,6 +39,8 @@ const Categories = ({ categories, setCategories }) => {
             <EditCategories 
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
+            categories={categories}
+            setCategories={setCategories}
             />
         </ul>
     )

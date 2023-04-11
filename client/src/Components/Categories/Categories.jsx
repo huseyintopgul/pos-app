@@ -1,31 +1,18 @@
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined  } from "@ant-design/icons";
 import { useState } from "react";
-import { Button, Form, Input, message, Modal } from "antd";
 import "./Style.css";
+import AddCategory from "./AddCategory";
+import EditCategories from "./EditCategories";
 
 const Categories = ({ categories, setCategories }) => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    const [form] = Form.useForm();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const categoryAdd = (values) => {
-        try {
-            fetch("http://localhost:4000/api/categories/add-category", {
-                method: "POST",
-                body: JSON.stringify(values),
-                headers: { "Content-type": "application/json; charset=UTF-8" },
-            });
-            message.success("Kategori başarıyla eklendi.");
-            form.resetFields();
-            setCategories([...categories, values]);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+  
 
 
     return (
-        <ul className="cat-ul flex md:flex-col gap-3 text-center z-100 ">
-
+        <ul className="flex md:flex-col gap-3 text-center z-100 ">
             {categories.map((item) => (
                 <li className="category-item" key={item._id}>
                     <span>{item.title}</span>
@@ -37,31 +24,22 @@ const Categories = ({ categories, setCategories }) => {
             >
                 <PlusOutlined className="md:text-2xl" />
             </li>
-            <Modal
-                title="Yeni Kategori Ekle"
-                open={isAddModalOpen}
-                onCancel={() => setIsAddModalOpen(false)}
-                footer={false}
+            <AddCategory
+            isAddModalOpen={isAddModalOpen}
+            setIsAddModalOpen={setIsAddModalOpen}
+            setCategories={setCategories}
+            categories={categories}
+            />
+            <li
+                className="category-item opacity-90 !bg-orange-800 hover:opacity-100"
+                onClick={() => setIsModalOpen(true)}
             >
-                <Form layout="vertical" onFinish={categoryAdd} form={form}>
-                    <Form.Item
-                        name="title"
-                        label="Kategori Ekle"
-                        rules={[
-                            { required: true, message: "Kategori Alanı Boş Geçilemez!" },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item className="flex justify-end mb-0">
-                        <Button type="primary" htmlType="submit">
-                            Oluştur
-                        </Button>
-                    </Form.Item>
-
-                </Form>
-            </Modal>
+                <EditOutlined className="md:text-2xl" />
+            </li>
+            <EditCategories 
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            />
         </ul>
     )
 }

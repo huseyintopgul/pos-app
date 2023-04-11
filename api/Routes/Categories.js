@@ -17,7 +17,7 @@ router.post("/add-category", async (req, res) => {
 
 // GET-ALL işlemi
 
-router.get("/get-all", async (req, res) => {
+router.get("/get-all-categories", async (req, res) => {
     try {
         const categories = await Category.find().sort({
             createdAt: -1

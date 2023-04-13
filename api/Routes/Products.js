@@ -47,7 +47,7 @@ router.put("/update-product", async (req, res) => {
         res.status(200).json("Ürününüz güncellendi")
     }
     catch (error) {
-        res.status(400).jason(error)
+        res.status(400).json(error)
     }
 });
 

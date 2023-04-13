@@ -17,11 +17,11 @@ const AddCategory = ({ isAddModalOpen, setIsAddModalOpen, categories, setCategor
                 _id: Math.random(),
                 title: values.title
             }]);
+            setIsAddModalOpen(false);
         } catch (error) {
-            console.log(error);
+            message.error(error);
         }
     };
-
     return (
         <>
             <Modal

@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route,} from 'react-router-dom'
+import { BrowserRouter, Routes, Route, } from 'react-router-dom'
 import HomePage from './Pages/HomePage';
 import CartPage from './Pages/CartPage';
 import InvoicesPage from './Pages/InvoicesPage';
@@ -6,6 +6,7 @@ import CustomersPage from './Pages/CustomersPage';
 import StatisticPage from './Pages/StatisticPage';
 import RegisterPage from './Pages/auth/RegisterPage';
 import LoginPage from './Pages/auth/LoginPage';
+import ProductPage from './Pages/ProductPage';
 
 
 function App() {
@@ -18,8 +19,9 @@ function App() {
           <Route path='/invoices' element={<InvoicesPage />} />
           <Route path='/customers' element={<CustomersPage />} />
           <Route path='/statistic' element={<StatisticPage />} />
+          <Route path='/products' element={<ProductPage />} />
           <Route path='/register' element={<RegisterPage />} />
-        <Route path='/login' element={<LoginPage />} />
+          <Route path='/login' element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
     </>

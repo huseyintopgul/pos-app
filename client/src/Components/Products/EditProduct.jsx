@@ -76,7 +76,8 @@ const EditProduct = () => {
                     body: JSON.stringify({ productId: id }),
                     headers: { "Content-type": "application/json; charset=UTF-8" }
                 })
-                setProducts(products.filter((item) => item._id !== id))
+                setProducts(
+                    products.filter((item) => item._id !== id))
                 message.success("Silme işlemi başarılı.")
             }
             catch (error) {

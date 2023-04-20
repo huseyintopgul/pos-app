@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import ProductItem from "./ProductItem";
 import { message } from "antd";
 import { PlusOutlined, EditOutlined } from "@ant-design/icons"
 import AddProduct from "./AddProduct";
 import { useNavigate } from "react-router-dom";
 
 
-const Products = ({ categories, setCategories }) => {
+const Products = ({ categories }) => {
     const [products, setProducts] = useState([]);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const navigate = useNavigate();
@@ -36,18 +37,7 @@ const Products = ({ categories, setCategories }) => {
             */}
 
             {products.map((item) => (
-                <div key={item._id} className="product-item border cursor-pointer hover:shadow-xl transition-all select-none,">
-                    <div className="product-img">
-                        <img src={item.img} alt={item.title}
-                            className="product-img h-28 object-cover w-full border-b" />
-                        {/* product-img için width-full özelliğini tanımlasak bile kapsayıcı wrapper için grid yapısını kullanacağımızdan dolayı,
-                              burada tanımlı w-full kendisi için belirtilen alanı dolduracaktır. */}
-                    </div>
-                    <div className="product-info flex flex-col text-center">
-                        <span className="prodoct-name font-bold">{item.title}</span>
-                        <span className="product-price font-bold">{item.price}₺</span>
-                    </div>
-                </div>
+                <ProductItem item={item} key={item._id} />
             ))}
             <div onClick={() => setIsAddModalOpen(true)}
                 className="add-prd min-h-[120px]  opacity-90 !bg-purple-800 hover:opacity-100 flex items-center justify-center cursor-pointer">
@@ -66,7 +56,7 @@ const Products = ({ categories, setCategories }) => {
                 products={products}
                 setProducts={setProducts}
             />
-        
+
         </div>
     )
 }

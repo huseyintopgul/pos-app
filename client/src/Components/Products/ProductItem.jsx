@@ -1,17 +1,14 @@
 import { addProduct } from "../../Redux/CartSlice";
 // addProduct ı kullanabilmemiz için react-redux ın dispatch özelliğine ihtiyacımız var 
 // onu sayfamıza import etmeliyiz
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const ProductItem = ({ item }) => {
-    const cart = useSelector((state) => state.cart);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(addProduct(item))
+        dispatch(addProduct({...item, quantity:1}))
     };
-
-    console.log(cart.cartItems);
 
     return (
         <div

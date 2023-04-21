@@ -24,9 +24,14 @@ const cartSlice = createSlice({
             }
             // find() metodu ile yapmış olduğumuz sorgu sonucunda ürün sepette varsa
             // "quantity" değerini +1 yapıyoruz, aki durumda ürünü sepete ekliyoruz.
+        },
+        // "initialState" içerisindeki elementlerimize ulaşmak için "reducer" içerisinde 
+        // oluşturduğumuz metodlara (state, action) değerlerini tanımlamamız gerekiyor.
+        deleteCart: (state, action) => {
+            state.cartItems = state.cartItems.filter((item) => item._id !== action.payload._id);
         }
     },
 })
 
-export const { addProduct } = cartSlice.actions
+export const { addProduct, deleteCart } = cartSlice.actions
 export default cartSlice.reducer;

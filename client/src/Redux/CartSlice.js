@@ -6,7 +6,7 @@ const cartSlice = createSlice({
         // sepette ekli ürünlerimizi tutacağımız array "cartItems" olacak,
         cartItems: [],
         total: 0,
-        price: 0
+        tax: 18,
     },
     // reducer içerisinde uygulama içerisinde gerçekleştireceğimiz fonksiyon ve metodlarımızı yazıyoruz.
     reducers: {
@@ -24,6 +24,8 @@ const cartSlice = createSlice({
             }
             // find() metodu ile yapmış olduğumuz sorgu sonucunda ürün sepette varsa
             // "quantity" değerini +1 yapıyoruz, aki durumda ürünü sepete ekliyoruz.
+            state.total += action.payload.price;
+
         },
         // "initialState" içerisindeki elementlerimize ulaşmak için "reducer" içerisinde 
         // oluşturduğumuz metodlara (state, action) değerlerini tanımlamamız gerekiyor.

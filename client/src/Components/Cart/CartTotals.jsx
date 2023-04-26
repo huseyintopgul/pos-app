@@ -1,7 +1,7 @@
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { ClearOutlined, MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { decrease, deleteCart, increase } from '../../Redux/CartSlice';
+import { clearCart, decrease, deleteCart, increase } from '../../Redux/CartSlice';
 
 const CartTotals = () => {
 
@@ -33,12 +33,13 @@ const CartTotals = () => {
                                         if (item.quantity === 1) {
                                             if (window.confirm("Ürünü silmek istediğinizden emin misiniz?")) {
                                                 dispatch(decrease(item));
+                                                message.success("Ürün silindi!")
                                             }
-                                        }
+                                        };
                                         // Burada 2. if şartını kullanmazsak eğer; confirmi onaylamasak bile ürün silinecektir!!!!
                                         if (item.quantity > 1) {
                                             dispatch(decrease(item));
-                                        }
+                                        };
                                     }}
                                 />
                                 <span className='product-pc px-2'> {item.quantity} </span>
@@ -74,11 +75,25 @@ const CartTotals = () => {
                     </span>
                 </div>
                 <div className="button py-5 px-2 flex flex-col">
-                    <Button type='primary' size='large' className='w-full' >
+                    <Button
+                        type='primary'
+                        size='large'
+                        disabled={cart.cartItems.length === 0}
+                        className='w-full' >
                         Siparişi Oluştur
                     </Button>
-                    <Button type='danger' size='large' className='temizle w-full mt-3 bg-red-500 text-white flex justify-center items-center'
-                        icon={<ClearOutlined />} >
+                    <Button
+                        type='primary'
+                        size='large'
+                        className='temizle w-full mt-3 !bg-red-500 text-white flex justify-center items-center'
+                        icon={<ClearOutlined />}
+                        disabled={cart.cartItems.length === 0}
+                        onClick={() => {
+                            if (window.confirm("Sepetteki ürünlerin hepsi silinsin mi?")) {
+                                dispatch(clearCart());
+                                message.success("Sepetinizdeki ürünler temizlendi")
+                            }
+                        }}>
                         Temizle
                     </Button>
                 </div>

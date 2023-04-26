@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
 
+// sepette ekli ürünlerimizi tutacağımız array "cartItems" olacak,
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
-        // sepette ekli ürünlerimizi tutacağımız array "cartItems" olacak,
         cartItems: [],
-        total: 0,
         tax: 18,
+        total: 0,
     },
     // reducer içerisinde uygulama içerisinde gerçekleştireceğimiz fonksiyon ve metodlarımızı yazıyoruz.
     reducers: {
@@ -25,15 +25,32 @@ const cartSlice = createSlice({
             // find() metodu ile yapmış olduğumuz sorgu sonucunda ürün sepette varsa
             // "quantity" değerini +1 yapıyoruz, aki durumda ürünü sepete ekliyoruz.
             state.total += action.payload.price;
-
+            // bu alanda sepete eklenen ürünlerin fiyat hesaplamasını yapıyoruz.
         },
         // "initialState" içerisindeki elementlerimize ulaşmak için "reducer" içerisinde 
         // oluşturduğumuz metodlara (state, action) değerlerini tanımlamamız gerekiyor.
         deleteCart: (state, action) => {
             state.cartItems = state.cartItems.filter((item) => item._id !== action.payload._id);
-        }
+            state.total -= action.payload.price * action.payload.quantity;
+            // bu alanda sepetten çıkartılan ürünlerin fiyatlarını totalden eksiltiyoruz.
+        },
+        // bu alanda sepet içerisinde bulunan "+" butonu ile ürün adedi artırma işlemini tapıyoruz
+        increase: (state, action) => {
+            const cartItem = state.cartItems.find((item) => item._id === action.payload._id)
+            cartItem.quantity += 1;
+            state.total += cartItem.price;
+        },
+        // bu alanda sepet içerisinde bulunan "-" butonu ile ürün adedi azaltma işlemini tapıyoruz
+        decrease: (state, action) => {
+            const cartItem = state.cartItems.find((item) => item._id === action.payload._id)
+            cartItem.quantity -= 1
+            if(cartItem.quantity === 0) {
+                state.cartItems = state.cartItems.filter((item)=> item._id !== action.payload._id);
+            }
+            state.total -= cartItem.price;
+        },
     },
 })
 
-export const { addProduct, deleteCart } = cartSlice.actions
+export const { addProduct, deleteCart, increase, decrease } = cartSlice.actions;
 export default cartSlice.reducer;

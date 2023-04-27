@@ -19,7 +19,10 @@ const CartTotals = () => {
                             <div className="item flex items-center justify-center">
                                 <div className="cart-product w-20 mr-2 object-cover">
                                     <img src={item.img} alt="cart-product-img" className='cursor-pointer'
-                                        onClick={() => dispatch(deleteCart(item))} />
+                                        onClick={() => {
+                                            dispatch(deleteCart(item));
+                                            message.success("Ürün silindi.")
+                                        }} />
                                 </div>
                                 <div className="detay flex flex-col justify-center items-start">
                                     <span className='font-bold'>{item.title}</span>

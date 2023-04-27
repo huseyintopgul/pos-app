@@ -37,7 +37,7 @@ return (
                     <HomeOutlined className='md:text-2xl text-xl' />
                     <span className='text-[10px] md:text-md'>Ana Sayfa</span>
                 </Link>
-                <Badge count={cart.cartItems.length} offset={[0, 5]} className='md:flex hidden '>
+                <Badge count={cart.cartItems.length} offset={[0, 0]} className='md:flex hidden '>
                     <Link to="/cart" className='menu-link flex flex-col'>
                         <ShoppingCartOutlined className='md:text-2xl text-xl' />
                         <span className='text-[10px] md:text-md'>Sepet</span>
@@ -62,7 +62,7 @@ return (
             </div>
 
             {/* md ekran altında responsive tasarım olarak görünecek */}
-            <Badge count={5} offset={[0, 5]} className='flex md:hidden'>
+            <Badge count={cart.cartItems.length} offset={[0, 0]} className='flex md:hidden'>
                 <Link to="/cart" className='resp-menu-link flex flex-col '>
                     <ShoppingCartOutlined className='text-2xl' />
                     <span className='text-[10px]'>Sepet</span>

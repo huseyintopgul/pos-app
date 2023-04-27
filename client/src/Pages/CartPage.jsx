@@ -1,7 +1,10 @@
 import { useState } from "react";
 import Header from "../Components/Header/Header";
-import { Table, Card, Button, } from "antd"
+import { Table, Card, Button, message, } from "antd"
 import CreateInvoice from "../Components/Cart/CreateInvoice";
+import { useDispatch, useSelector } from "react-redux";
+import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { increase, decrease, deleteCart } from "../Redux/CartSlice";
 
 
 const CartPage = () => {
@@ -18,48 +21,107 @@ const CartPage = () => {
     // };
 
     // table area start
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-        },
-    ];
+    const cart = useSelector((state) => state.cart);
+    const dispatch = useDispatch();
+
+
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Ürün Görseli',
+            dataIndex: 'img',
+            key: 'img',
+            width: '150px',
+            render: (text) => {
+                return (<img src={text} alt="" className="w-full h-24 object-cover" />)
+            }
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'Ürün Adı',
+            dataIndex: 'title',
+            key: 'title',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Kategori',
+            dataIndex: 'category',
+            key: 'category',
         },
+        {
+            title: 'Ürün Fiyatı',
+            dataIndex: 'price',
+            key: 'price',
+            render: (text, _) => {
+                return (
+                    <span> {text} ₺ </span>
+                )
+            }
+        },
+        {
+            title: 'Ürün Adeti',
+            dataIndex: 'quantity',
+            key: 'quantity',
+            render: (text, record) => {
+                return (
+                    <>
+                        <div className="cart-icons flex flex-row p-1">
+                            <Button type='danger' size='small' className='cart-icon bg-red-500 text-white w-full flex !rounded-full items-center justify-center'
+                                icon={<MinusCircleOutlined />}
+                                onClick={() => {
+                                    if (record.quantity === 1) {
+                                        if (window.confirm("Ürünü silmek istediğinizden emin misiniz?")) {
+                                            dispatch(decrease(record));
+                                            message.success("Ürün silindi!")
+                                        }
+                                    };
+                                    // Burada 2. if şartını kullanmazsak eğer; confirmi onaylamasak bile ürün silinecektir!!!!
+                                    if (record.quantity > 1) {
+                                        dispatch(decrease(record));
+                                    };
+                                }}
+                            />
+                            <span className='product-pc px-2'> {record.quantity} </span>
+                            <Button type='primary' size='small' className='cart-icon text-whit w-full flex !rounded-full items-center justify-center'
+                                icon={<PlusCircleOutlined />}
+                                onClick={() => dispatch(increase(record))}
+                            />
+                        </div>
+                    </>
+                )
+            }
+        },
+        {
+            title: 'Toplam Fİyat',
+            render: (_, record) => {
+                return (
+                    <span>{(record.quantity * record.price).toFixed(2)} ₺</span>
+                )
+            }
+        },
+        {
+            title: 'İşlemler',
+            render: (_, record) => {
+                return (
+                    <Button
+                        type="link"
+                        danger
+                        onClick={() => {
+                            if (window.confirm("Ürünü silmek istediğinizden emin misiniz?")) {
+                                dispatch(deleteCart(record));
+                                message.success("Ürün silindi.")
+                            }
+                        }
+                        }> Sil </Button>
+                )
+            }
+        }
+
     ];
     // table area finish
-
-
-
-
 
     return (
         <>
             <Header />
             <div className="cart-page px-6">
-                <Table dataSource={dataSource} columns={columns} bordered pagination={false} />
+                <Table dataSource={cart.cartItems} columns={columns} bordered pagination={false} />
                 <div className="cart-totals flex justify-end px-6 mt-5">
                     <Card className="w-[300px]">
                         <div className="ara-total flex flex-col">

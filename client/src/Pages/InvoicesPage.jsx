@@ -18,6 +18,8 @@ const InvoicesPage = () => {
 
     // table area start
     const [invoiceItems, setInvoiceItems] = useState();
+    const [customer, setCustomer] = useState();
+
     useEffect(() => {
         const getInvoices = async (values) => {
             try {
@@ -30,8 +32,7 @@ const InvoicesPage = () => {
             }
         };
         getInvoices();
-    }, [])
-
+    }, []);
     const columns = [
         {
             title: 'Müşteri Adı',
@@ -48,7 +49,7 @@ const InvoicesPage = () => {
             dataIndex: 'createdAt',
             key: 'createdAt',
             render: (text, _) => {
-                return (<span> {text.substring(0, 10)} </span>)
+                return (<span> {text} </span>)
             }
         },
         {
@@ -66,10 +67,13 @@ const InvoicesPage = () => {
         },
         {
             title: 'İşlemler',
-            render: () => {
+            render: (_, record) => {
                 return (
                     <Button
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => {
+                            setIsModalOpen(true);
+                            setCustomer(record);
+                        }}
                         type="link" >Yazdır</Button>
                 )
             }
@@ -83,7 +87,11 @@ const InvoicesPage = () => {
             <div className="cart-page px-6">
                 <Table dataSource={invoiceItems} columns={columns} bordered pagination={false} />
             </div>
-            <PrintInvoices isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+            <PrintInvoices
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                customer={customer}
+            />
             {/* isModalOpen, setIsModalOpen statelerini props olarak "CreateInvoice" Componentine aktarıyoruz */}
         </>
     )

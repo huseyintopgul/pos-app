@@ -121,31 +121,50 @@ const CartPage = () => {
         <>
             <Header />
             <div className="cart-page px-6">
-                <Table dataSource={cart.cartItems} columns={columns} bordered pagination={false} />
+                <Table 
+                dataSource={cart.cartItems} 
+                columns={columns} 
+                bordered 
+                pagination={false}
+                scroll={{
+                    x:1200,
+                    y:400,
+                }} />
                 <div className="cart-totals flex justify-end px-6 mt-5">
                     <Card className="w-[300px]">
                         <div className="ara-total flex flex-col">
                             <div className="ara-toplam py-1 px-3 flex flex-row justify-between">
                                 <span className="">Ara Toplam</span>
-                                <span className="">1000₺</span>
+                                <span>
+                                    {Number(cart.total).toFixed(2)} ₺
+                                </span>
                             </div>
                             <div className="ara-toplam py-1 px-3 flex flex-row justify-between">
-                                <span className="">Toplam KDV %18</span>
-                                <span className="text-red-600">+540₺</span>
+                                <span className="">KDV % {cart.tax} </span>
+                                <span className="text-red-600">
+                                    {Number((cart.total * cart.tax) / 100).toFixed(2)} ₺
+                                </span>
                             </div>
                             <div className="ara-toplam py-1 px-3 flex flex-row justify-between font-bold">
                                 <span className="">Toplam Tutar</span>
-                                <span className="">1540₺</span>
+                                <span className="">
+                                    {(Number((cart.total)) + Number(((cart.total * cart.tax) / 100))).toFixed(2)} ₺
+                                </span>
                             </div>
                             <div className="ara-toplam mt-3 px-3">
-                                <Button type="primary" size="large" className="w-full tracking-wider display-block" onClick={() => setIsModalOpen(true)}>Siparişi Tamamla</Button>
-                            </div>
+                                <Button type="primary"
+                                    size="large"
+                                    className="w-full tracking-wider display-block"
+                                    disabled={cart.cartItems.length === 0}
+                                    onClick={() => setIsModalOpen(true)}>
+                                Siparişi Oluştur</Button>
                         </div>
-                    </Card>
                 </div>
-            </div>
-            <CreateInvoice isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
-            {/* isModalOpen, setIsModalOpen statelerini props olarak "CreateInvoice" Componentine aktarıyoruz */}
+            </Card>
+        </div >
+            </div >
+    <CreateInvoice isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+{/* isModalOpen, setIsModalOpen statelerini props olarak "CreateInvoice" Componentine aktarıyoruz */ }
         </>
     )
 }

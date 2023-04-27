@@ -2,11 +2,15 @@ import { Button, message } from 'antd';
 import { ClearOutlined, MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearCart, decrease, deleteCart, increase } from '../../Redux/CartSlice';
+import { useNavigate } from 'react-router-dom';
 
 const CartTotals = () => {
 
     const cart = useSelector((state) => state.cart);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
+    // useNavigate ' i, cartTotals içerisinde bulunan "sipariş oluştur' butonuna tıklayınca
+    // bizi "CART" sayfasına yönlendirmesi için kullanıyoruz.
 
     return (
         <div className="cart h-full max-h-[calc(100vh_-_90px)] flex flex-col">
@@ -60,21 +64,21 @@ const CartTotals = () => {
                     <div className="araToplam flex justify-between p-2">
                         <b> Ara Toplam</b>
                         <span>
-                            {Number(cart.total).toFixed(2)}₺
+                            {Number(cart.total).toFixed(2)} ₺
                         </span>
                     </div>
 
                     <div className="kdv flex justify-between p-2">
                         <b> KDV %{cart.tax} </b>
                         <span className="text-red-700 font-bold">
-                            {Number((cart.total * cart.tax) / 100)} ₺
+                            {Number((cart.total * cart.tax) / 100).toFixed(2)} ₺
                         </span>
                     </div>
                 </div>
                 <div className="genel-toplam flex justify-between mt-3 border-b">
                     <b className="font-bold text-xl p-2 text-green-600">Genel Toplam</b>
                     <span className="font-bold text-xl p-2">
-                        {(Number((cart.total)) + Number(((cart.total * cart.tax) / 100))).toFixed(2)}₺
+                        {(Number((cart.total)) + Number((cart.total * cart.tax) / 100)).toFixed(2)} ₺
                     </span>
                 </div>
                 <div className="button py-5 px-2 flex flex-col">
@@ -82,7 +86,8 @@ const CartTotals = () => {
                         type='primary'
                         size='large'
                         disabled={cart.cartItems.length === 0}
-                        className='w-full' >
+                        className='w-full'
+                        onClick={() => navigate("/cart")} >
                         Siparişi Oluştur
                     </Button>
                     <Button

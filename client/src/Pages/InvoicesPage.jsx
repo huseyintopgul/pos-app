@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../Components/Header/Header";
-import { Table, Card, Button } from "antd";
+import { Table, Button } from "antd";
 import PrintInvoices from "../Components/Invoices/PrintInvoices";
 
 const InvoicesPage = () => {
@@ -17,36 +17,63 @@ const InvoicesPage = () => {
     // };
 
     // table area start
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-        },
-    ];
+    const [invoiceItems, setInvoiceItems] = useState();
+    useEffect(() => {
+        const getInvoices = async (values) => {
+            try {
+                const res = await fetch("http://localhost:4000/api/invoices/get-all-invoices");
+                const data = await res.json();
+                setInvoiceItems(data);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        };
+        getInvoices();
+    }, [])
+
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Müşteri Adı',
+            dataIndex: 'customerName',
+            key: 'customerName',
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'Telefon Numarası',
+            dataIndex: 'customerPhoneNumber',
+            key: 'customerPhoneNumber',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Oluşturulma Tarihi',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            render: (text, _) => {
+                return (<span> {text.substring(0, 10)} </span>)
+            }
         },
+        {
+            title: 'Ödeme YÖntemi',
+            dataIndex: 'paymentMod',
+            key: 'paymentMod'
+        },
+        {
+            title: 'Toplam Fiyat',
+            dataIndex: 'totalAmount',
+            key: 'totalAmount',
+            render: (text, _) => {
+                return (<span> {text} ₺</span>)
+            }
+        },
+        {
+            title: 'İşlemler',
+            render: () => {
+                return (
+                    <Button
+                        onClick={() => setIsModalOpen(true)}
+                        type="link" >Yazdır</Button>
+                )
+            }
+        }
     ];
     // table area finish
     return (
@@ -54,16 +81,7 @@ const InvoicesPage = () => {
             <Header />
             <h2 className="inv-hed text-4xl text-bold text-center mb-4">Faturalar</h2>
             <div className="cart-page px-6">
-                <Table dataSource={dataSource} columns={columns} bordered pagination={false} />
-                <div className="cart-totals flex justify-end px-6 mt-5">
-                    <Card className="w-[300px]">
-                        <div className="ara-total flex flex-col">
-                            <div className="ara-toplam mt-3 px-3">
-                                <Button type="primary" size="large" className="w-full tracking-wider display-block" onClick={() => setIsModalOpen(true)}>Yazdır</Button>
-                            </div>
-                        </div>
-                    </Card>
-                </div>
+                <Table dataSource={invoiceItems} columns={columns} bordered pagination={false} />
             </div>
             <PrintInvoices isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
             {/* isModalOpen, setIsModalOpen statelerini props olarak "CreateInvoice" Componentine aktarıyoruz */}

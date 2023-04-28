@@ -15,7 +15,7 @@ const Products = ({ categories }) => {
         const getProduct = async () => {
             try {
                 const response = await fetch("http://localhost:4000/api/products/get-all-products");
-                const data = await response.json();
+                const data = await response.json(); 
                 setProducts(data)
             }
             catch (error) {

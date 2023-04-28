@@ -72,7 +72,7 @@ const CartTotals = () => {
                     <div className="kdv flex justify-between p-2">
                         <b> KDV %{cart.tax} </b>
                         <span className="text-red-700 font-bold">
-                            {Number((cart.total * cart.tax) / 100).toFixed(2)} ₺
+                            {(Number((cart.total * cart.tax)) / 100).toFixed(2)} ₺
                         </span>
                     </div>
                 </div>

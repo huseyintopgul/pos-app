@@ -1,40 +1,45 @@
+import { useEffect, useState } from "react";
 import Header from "../Components/Header/Header"
-import { Table } from "antd";
+import { Table, message } from "antd";
 
 
 const CustomersPage = () => {
+    const [invoiceItems, setInvoiceItems] = useState([]);
 
+    useEffect(() => {
+        const getInvoices = async (values) => {
+            try {
+                const res = await fetch("http://localhost:4000/api/invoices/get-all-invoices")
+                const data = await res.json();
+                setInvoiceItems(data);
+            }
+            catch (error) {
+                message.error("İşlem başarısız");
+            }
+        }
+        getInvoices();
+    }, []);
 
     // table area start
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-        },
-    ];
+
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Müşteri Adı',
+            dataIndex: 'customerName',
+            key: 'customerName',
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'Telefon Numarası',
+            dataIndex: 'customerPhoneNumber',
+            key: 'customerPhoneNumber',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'İşlem Tarihi',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            render:(record)=>{
+                return(<span>{record.substring(0, 10)} </span>)
+            }
         },
     ];
     return (
@@ -42,8 +47,16 @@ const CustomersPage = () => {
             <Header />
             <h2 className="inv-hed text-4xl text-bold text-center mb-4">Müşterilerim</h2>
             <div className="cart-page px-6">
-                <Table dataSource={dataSource} columns={columns} bordered pagination={false} />
-            
+                <Table 
+                dataSource={invoiceItems} 
+                columns={columns} 
+                bordered 
+                pagination={false}
+                scroll={{
+                    x:600,
+                    y:500
+                }} />
+
             </div>
         </>
     )

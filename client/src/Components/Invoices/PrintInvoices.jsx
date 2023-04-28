@@ -1,8 +1,14 @@
 import { Button, Modal, } from "antd";
-
+import { useReactToPrint } from "react-to-print"
+import {useRef} from "react"
+// reacttoprint kütüphanesi içerisinde yer alan "useReactToprint" hook'unu kullanıyoruz
 
 const PrintInvoices = ({ isModalOpen, setIsModalOpen, customer }) => {
-
+const componentRef = useRef();
+// DOM içerisindeki elementin current value'larına erişmek için kullanıyoruz
+const handlePrint = useReactToPrint({
+    content: ()=>componentRef.current,
+})
     return (
         <>
             <Modal
@@ -11,7 +17,7 @@ const PrintInvoices = ({ isModalOpen, setIsModalOpen, customer }) => {
                 open={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
                 footer={false}>
-                <section className="w-full inv-sec py-20 bg-black">
+                <section className="w-full inv-sec py-20 bg-black" ref={componentRef}>
                     <div className="mx-auto bg-white px-6">
                         <article className="overflow-hidden">
                             <div className="logo my-5">
@@ -22,7 +28,7 @@ const PrintInvoices = ({ isModalOpen, setIsModalOpen, customer }) => {
                                 <div className="grid sm:grid-cols-4 grid-cols-3 gap-12">
                                     <div className="text-md text-slate-500">
                                         <p className="font-bold text-slate-700">Fatura Detayı:</p>
-                                        <p>Unwrapped</p>
+                                        <p>{customer?.customerName} </p>
                                         <p> Fake Street 123</p>
                                         <p> San Javier </p>
                                         <p> CA 1234</p>
@@ -207,7 +213,9 @@ const PrintInvoices = ({ isModalOpen, setIsModalOpen, customer }) => {
                     </div>
                 </section>
                 <div className="print-button flex justify-end mt-4">
-                    <Button type="primary"> Yazdır </Button>
+                    <Button 
+                    onClick={handlePrint}
+                    type="primary"> Yazdır </Button>
                 </div>
             </Modal>
         </>

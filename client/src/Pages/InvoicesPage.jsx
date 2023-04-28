@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "../Components/Header/Header";
-import { Table, Button } from "antd";
+import { Table, Button, message } from "antd";
 import PrintInvoices from "../Components/Invoices/PrintInvoices";
 
 const InvoicesPage = () => {
@@ -28,7 +28,7 @@ const InvoicesPage = () => {
                 setInvoiceItems(data);
             }
             catch (error) {
-                console.log(error);
+                message.error(error);
             }
         };
         getInvoices();
@@ -48,8 +48,8 @@ const InvoicesPage = () => {
             title: 'Oluşturulma Tarihi',
             dataIndex: 'createdAt',
             key: 'createdAt',
-            render: (text, _) => {
-                return (<span> {text} </span>)
+            render: (record) => {
+                return (<span> {record.substring(0, 10)} </span>)
             }
         },
         {
@@ -85,7 +85,15 @@ const InvoicesPage = () => {
             <Header />
             <h2 className="inv-hed text-4xl text-bold text-center mb-4">Faturalar</h2>
             <div className="cart-page px-6">
-                <Table dataSource={invoiceItems} columns={columns} bordered pagination={false} />
+                <Table
+                    dataSource={invoiceItems}
+                    columns={columns}
+                    bordered
+                    pagination={false}
+                    scroll={{
+                        x: 1000,
+                        y: 400
+                    }} />
             </div>
             <PrintInvoices
                 isModalOpen={isModalOpen}

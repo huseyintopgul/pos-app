@@ -2,20 +2,35 @@ import Header from '../Components/Header/Header'
 import { useState, useEffect } from 'react';
 import StatisticCard from '../Components/Statistics/StatisticCard'
 import { Area, Pie } from '@ant-design/plots';
-
+import { message } from 'antd';
 
 
 const StatisticPage = () => {
+    const [products, setProducts] = useState([]);
 
     const [data, setData] = useState([]);
 
     useEffect(() => {
         asyncFetch();
     }, []);
+    useEffect(() => {
+
+        const getProducts = async () => {
+            try {
+                const res = await fetch("http://localhost:4000/api/products/get-all-products");
+                const data = await res.json();
+                setProducts(data);
+            }
+            catch (error) {
+                message.error("İşlem başarısız.")
+            }
+        }
+        getProducts();
+    }, [])
 
 
     const asyncFetch = () => {
-        fetch('https://gw.alipayobjects.com/os/bmw-prod/360c3eae-0c73-46f0-a982-4746a6095010.json')
+        fetch('http://localhost:4000/api/invoices/get-all-invoices')
             .then((response) => response.json())
             .then((json) => setData(json))
             .catch((error) => {
@@ -25,47 +40,22 @@ const StatisticPage = () => {
 
     const config = {
         data,
-        xField: 'timePeriod',
-        yField: 'value',
+        xField: 'customerName',
+        yField: 'subTotal',
         xAxis: {
             range: [0, 1],
         },
     };
 
 
-    const data2 = [
-        {
-            type: '1',
-            value: 27,
-        },
-        {
-            type: '2',
-            value: 25,
-        },
-        {
-            type: '3',
-            value: 18,
-        },
-        {
-            type: '4',
-            value: 15,
-        },
-        {
-            type: '5',
-            value: 10,
-        },
-        {
-            type: '6',
-            value: 5,
-        },
-    ];
+
     // congig-2 area
 
     const config2 = {
         appendPadding: 10,
-        data: data2,
-        angleField: 'value',
-        colorField: 'type',
+        data,
+        angleField: 'subTotal',
+        colorField: 'customerName',
         radius: 1,
         innerRadius: 0.6,
         label: {
@@ -93,12 +83,15 @@ const StatisticPage = () => {
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                 },
-                content: 'AntV\nG2Plot',
+                content: 'Genel\nToplam',
             },
         },
     };
 
-
+    const totalAmount = () => {
+        const amount = data.reduce((total, item) => item.totalAmount + total, 0);
+        return `${amount.toFixed(2)} ₺`;
+    };
 
     return (
         <>
@@ -112,10 +105,10 @@ const StatisticPage = () => {
 
                 <div className="statistic-cards my-6 px-3 grid gap-3 xl:grid-cols-statistic-card md:grid-cols-2">
                     {/* grid-cols-statistic-card' tailwind.config.js dosyasından değişken olarak çekiyoruz. */}
-                    <StatisticCard tittle={"Toplam Müşteri"} amount={"17"} img={"https://cdn2.iconfinder.com/data/icons/user-23/512/User_Customers.png"} alt={"card-details"} />
-                    <StatisticCard tittle={"Toplam Kazanç"} amount={"6.756₺"} img={"https://cdn-icons-png.flaticon.com/512/925/925014.png"} alt={"card-details"} />
-                    <StatisticCard tittle={"Toplam Satış"} amount={"13"} img={"https://cdn-icons-png.flaticon.com/512/2275/2275927.png"} alt={"card-details"} />
-                    <StatisticCard tittle={"Toplam Ürün"} amount={"25"} img={"https://cdn-icons-png.flaticon.com/512/2875/2875878.png"} alt={"card-details"} />
+                    <StatisticCard tittle={"Toplam Müşteri"} amount={data?.length} img={"https://cdn2.iconfinder.com/data/icons/user-23/512/User_Customers.png"} alt={"card-details"} />
+                    <StatisticCard tittle={"Toplam Kazanç"} amount={totalAmount()} img={"https://cdn-icons-png.flaticon.com/512/925/925014.png"} alt={"card-details"} />
+                    <StatisticCard tittle={"Toplam Satış"} amount={data?.length} img={"https://cdn-icons-png.flaticon.com/512/2275/2275927.png"} alt={"card-details"} />
+                    <StatisticCard tittle={"Toplam Ürün"} amount={products?.length} img={"https://cdn-icons-png.flaticon.com/512/2875/2875878.png"} alt={"card-details"} />
                     {/* StatisticPage için oluşturduğumuz StatisticCard Componentine "tittle-amount-img-alt" propsları gönderip diğer sayfada yazılacak kodu
                     sayısını azaltıyoruz */}
                 </div>

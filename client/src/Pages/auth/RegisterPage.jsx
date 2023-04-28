@@ -1,9 +1,32 @@
-import { Button, Form, Input, Carousel } from "antd";
-import { Link } from "react-router-dom";
+import { Button, Form, Input, Carousel, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import AuthCarousel from "../../Components/Auth/AuthCarosel";
+import { useState } from "react";
 
 
 const RegisterPage = () => {
+    const [form] = Form.useForm();
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const register = async (values) => {
+        setLoading(true);
+        try {
+            const res = await fetch("http://localhost:4000/api/auth/register", {
+                method: "POST",
+                body: JSON.stringify(values),
+                headers: { "Content-type": "application/json; charset=UTF-8" },
+            });
+            if (res.status === 200) {
+                message.success("kayıt işlemi başarılı");
+                form.resetFields();
+                navigate("/login");
+                setLoading(false);
+            }
+        }
+        catch (error) {
+            message.error(error);
+        }
+    };
 
     return (
         <div className="h-screen">
@@ -11,10 +34,10 @@ const RegisterPage = () => {
                 <div className="xl:px-20 px-10 w-full flex flex-col h-full justify-center relative bg-slate-100">
                     <h1 className="text-center text-5xl font-bold mb-2">LOGO</h1>
                     <h3 className="text-center text-2xl mb-10 mt-5">Kaydol</h3>
-                    <Form layout="vertical">
+                    <Form layout="vertical" onFinish={register} form={form}>
                         <Form.Item
                             label="Kullanıcı Adı"
-                            name={"username"}
+                            name={"userName"}
                             rules={[
                                 {
                                     required: true,
@@ -75,6 +98,7 @@ const RegisterPage = () => {
                                 htmlType="submit"
                                 className="w-full"
                                 size="large"
+                                loading={loading}
                             >
                                 Kaydol
                             </Button>

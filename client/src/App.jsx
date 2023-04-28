@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, } from 'react-router-dom'
 import HomePage from './Pages/HomePage';
 import CartPage from './Pages/CartPage';
 import InvoicesPage from './Pages/InvoicesPage';
@@ -14,12 +14,12 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/cart' element={<CartPage />} />
-          <Route path='/invoices' element={<InvoicesPage />} />
-          <Route path='/customers' element={<CustomersPage />} />
-          <Route path='/statistic' element={<StatisticPage />} />
-          <Route path='/products' element={<ProductPage />} />
+          <Route path='/' element={<RouteControl> <HomePage /> </RouteControl>} />
+          <Route path='/cart' element={<RouteControl> <CartPage /> </RouteControl>} />
+          <Route path='/invoices' element={<RouteControl> <InvoicesPage /> </RouteControl>} />
+          <Route path='/customers' element={<RouteControl> <CustomersPage /> </RouteControl>} />
+          <Route path='/statistic' element={<RouteControl> <StatisticPage /> </RouteControl>} />
+          <Route path='/products' element={<RouteControl> <ProductPage /> </RouteControl>} />
           <Route path='/register' element={<RegisterPage />} />
           <Route path='/login' element={<LoginPage />} />
         </Routes>
@@ -29,3 +29,15 @@ function App() {
 }
 
 export default App;
+
+
+// yönlendirivi güvenlik kontrol alanı
+// RouteControl ile kullanıcı kaydı olmayan kişilerin app' e girişini engellemek ve 
+// login sayfasına yönlendirmek için kullanıyoruz.
+export const RouteControl = ({ children }) => {
+  if (localStorage.getItem("systemUser")) {
+    return children;
+  } else {
+    return <Navigate to="/login" />;
+  }
+};

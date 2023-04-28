@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { SearchOutlined, HomeOutlined, ShoppingCartOutlined, CopyOutlined, BarChartOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { Badge, Input } from 'antd'
+import { Badge, Input, message } from 'antd'
 
 
 
@@ -10,6 +10,14 @@ const Header = () => {
     // useSelector ile "state.cart" ımızı "cart" değişkenine atayıp, 
     // bunun içerisinde bulunan "cart.cartItem.length" ile dinamikleştiriyooruz..
     const cart =  useSelector((state)=> state.cart)
+    const navigate = useNavigate();
+    const logOut = () => {
+        if(window.confirm("Çıkış yapmak istediğinize emin misiniz?")){
+            localStorage.removeItem("systemUser");
+            navigate("/login");
+            message.success("Çıkış işlemi başarılı");
+        }
+    }
 
 return (
     <div className="border-b mb-6">
@@ -55,10 +63,12 @@ return (
                     <BarChartOutlined className='md:text-2xl text-xl' />
                     <span className='text-[10px] md:text-md'>İstatistik</span>
                 </Link>
-                <Link to="/login" className='menu-link flex flex-col'>
+               <div onClick={logOut} >
+               <Link className='menu-link flex flex-col'>
                     <LogoutOutlined className='md:text-2xl text-xl' />
                     <span className='text-[10px] md:text-md'>Çıkış</span>
                 </Link>
+               </div>
             </div>
 
             {/* md ekran altında responsive tasarım olarak görünecek */}

@@ -1,9 +1,41 @@
-import { Button, Form, Input, Carousel, Checkbox } from "antd";
-import { Link } from "react-router-dom";
+import { Button, Form, Input, Carousel, Checkbox, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import AuthCarousel from "../../Components/Auth/AuthCarosel";
+import { useState } from "react";
 
 
 const LoginPage = () => {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+    const handleLogin = async (values) => {
+        setLoading(true)
+        try {
+            const res = await fetch("http://localhost:4000/api/auth/login", {
+                method: "POST",
+                body: JSON.stringify(values),
+                headers: { "Content-type": "application/json; charset=UTF-8" }
+            });
+            const user = await res.json();
+            if (res.status === 200) {
+                localStorage.setItem("systemUser", JSON.stringify({
+                    user: user.userName,
+                    email: user.email,
+                }))
+                message.success("Giriş Yapıldı.");
+                navigate("/")
+            } else if (res.status === 404) {
+                message.error("Kullanıcı bulunamadı!");
+            } else if (res.status === 403) {
+                message.error("Girilen şifre eşleşmiyor!");
+            }
+            setLoading(false)
+        }
+        catch (error) {
+            message.error("İşlem başarısız.")
+            setLoading(false)
+        }
+    }
 
     return (
         <div className="h-screen">
@@ -11,7 +43,11 @@ const LoginPage = () => {
                 <div className="xl:px-20 px-10 w-full flex flex-col h-full justify-center relative bg-slate-100">
                     <h1 className="text-center text-5xl font-bold mb-2">LOGO</h1>
                     <h3 className="text-center text-2xl mb-10 mt-5">Giriş Yap</h3>
-                    <Form layout="vertical">
+                    <Form layout="vertical"
+                        onFinish={handleLogin}
+                        initialValues={{
+                            remember: false,
+                        }} >
                         <Form.Item
                             label="E-mail"
                             name={"email"}
@@ -48,6 +84,7 @@ const LoginPage = () => {
                                 htmlType="submit"
                                 className="w-full"
                                 size="large"
+                                loading={loading}
                             >
                                 Giriş Yap
                             </Button>

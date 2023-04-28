@@ -55,7 +55,7 @@ return (
                     <BarChartOutlined className='md:text-2xl text-xl' />
                     <span className='text-[10px] md:text-md'>İstatistik</span>
                 </Link>
-                <Link to="/" className='menu-link flex flex-col'>
+                <Link to="/login" className='menu-link flex flex-col'>
                     <LogoutOutlined className='md:text-2xl text-xl' />
                     <span className='text-[10px] md:text-md'>Çıkış</span>
                 </Link>

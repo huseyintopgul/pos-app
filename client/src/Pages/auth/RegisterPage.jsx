@@ -8,7 +8,7 @@ const RegisterPage = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const register = async (values) => {
+    const handleRegister = async (values) => {
         setLoading(true);
         try {
             const res = await fetch("http://localhost:4000/api/auth/register", {
@@ -34,7 +34,7 @@ const RegisterPage = () => {
                 <div className="xl:px-20 px-10 w-full flex flex-col h-full justify-center relative bg-slate-100">
                     <h1 className="text-center text-5xl font-bold mb-2">LOGO</h1>
                     <h3 className="text-center text-2xl mb-10 mt-5">Kaydol</h3>
-                    <Form layout="vertical" onFinish={register} form={form}>
+                    <Form layout="vertical" onFinish={handleRegister} form={form}>
                         <Form.Item
                             label="Kullanıcı Adı"
                             name={"userName"}

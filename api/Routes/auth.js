@@ -29,7 +29,9 @@ router.post("/login", async (req, res) => {
     try {
 
         const user = await User.findOne({ email: req.body.email });
-        !user && res.status(404).json({ error: "Kullanıcı bulunamadı!" });
+        if (!user) {
+         return res.status(404).json({ error: "Kullanıcı bulunamadı!" });
+        }
         // bu kısımda req. içerisinde gelen EMAİL ile DB de kayıtlı olan şifrenin karşılaştırılmasını yapıyoruz ve res. döndürüyoruz.
 
         const validPassword = await bcryptjs.compare(req.body.password, user.password);

@@ -75,7 +75,7 @@ const CartPage = () => {
                             width: 90,
                         }}
                     >
-                        Search
+                        Ara
                     </Button>
                     <Button
                         onClick={() => clearFilters && handleReset(clearFilters)}
@@ -84,7 +84,7 @@ const CartPage = () => {
                             width: 90,
                         }}
                     >
-                        Reset
+                        Yenile
                     </Button>
                     <Button
                         type="link"
@@ -97,7 +97,7 @@ const CartPage = () => {
                             setSearchedColumn(dataIndex);
                         }}
                     >
-                        Filter
+                        Filitre
                     </Button>
                     <Button
                         type="link"
@@ -106,7 +106,7 @@ const CartPage = () => {
                             close();
                         }}
                     >
-                        close
+                        Kapat
                     </Button>
                 </Space>
             </div>

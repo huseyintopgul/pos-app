@@ -1,7 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { SearchOutlined, HomeOutlined, ShoppingCartOutlined, CopyOutlined, BarChartOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { Badge, Input, message } from 'antd'
+import "./styleHeader.css";
 
 
 
@@ -11,6 +12,8 @@ const Header = ({ setSearch }) => {
     // bunun içerisinde bulunan "cart.cartItem.length" ile dinamikleştiriyooruz..
     const cart = useSelector((state) => state.cart)
     const navigate = useNavigate();
+    const { pathname } = useLocation();
+
     const logOut = () => {
         if (window.confirm("Çıkış yapmak istediğinize emin misiniz?")) {
             localStorage.removeItem("systemUser");
@@ -27,12 +30,16 @@ const Header = ({ setSearch }) => {
                         <h2 className="text-2xl font-bold md:text-4xl">LOGO</h2>
                     </Link>
                 </div>
-                <div className="header-search flex-1 flex justify-center">
+                <div onClick={() => {
+                    pathname !== "/" && navigate("/");
+                }}
+                    className="header-search flex-1 flex justify-center">
                     <Input size="large"
                         placeholder="Search..."
                         prefix={<SearchOutlined />}
                         className="rounded-full"
-                        onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                        disabled={pathname !== "/"}
+                    onChange={(e) => setSearch(e.target.value.toLowerCase())}
                     />
                 </div>
                 {/* responsive menu-links alanı
@@ -42,30 +49,30 @@ const Header = ({ setSearch }) => {
                 */}
                 <div className="menu-links flex justify-between items-center gap-7
                                 md:static fixed z-50 bg-white md:bg-transparent bottom-0 md:w-auto w-full left-0 md:border-t-0 border-t md:px-0 px-5 py-1">
-                    <Link to="/" className='menu-link flex flex-col'>
+                    <Link to="/" className={`menu-link ${pathname === "/" && "active" }`}>
                         <HomeOutlined className='md:text-2xl text-xl' />
                         <span className='text-[10px] md:text-md'>Ana Sayfa</span>
                     </Link>
                     <Badge count={cart.cartItems.length} offset={[0, 0]} className='md:flex hidden '>
-                        <Link to="/cart" className='menu-link flex flex-col'>
+                        <Link to="/cart" className={`menu-link ${pathname === "/cart" && "active" }`}>
                             <ShoppingCartOutlined className='md:text-2xl text-xl' />
                             <span className='text-[10px] md:text-md'>Sepet</span>
                         </Link>
                     </Badge>
-                    <Link to="/invoices" className='menu-link flex flex-col'>
+                    <Link to="/invoices" className={`menu-link ${pathname === "/invoices" && "active" }`} >
                         <CopyOutlined className='md:text-2xl text-xl' />
                         <span className='text-[10px] md:text-md'>Faturalar</span>
                     </Link>
-                    <Link to="/customers" className='menu-link flex flex-col'>
+                    <Link to="/customers" className={`menu-link ${pathname === "/customers" && "active" }`} >
                         <UserOutlined className='md:text-2xl text-xl' />
                         <span className='text-[10px] md:text-md'>Müşteriler</span>
                     </Link>
-                    <Link to="/statistic" className='menu-link flex flex-col'>
+                    <Link to="/statistic" className={`menu-link ${pathname === "/statistic" && "active" }`} >
                         <BarChartOutlined className='md:text-2xl text-xl' />
                         <span className='text-[10px] md:text-md'>İstatistik</span>
                     </Link>
                     <div onClick={logOut} >
-                        <Link className='menu-link flex flex-col'>
+                        <Link className="menu-link">
                             <LogoutOutlined className='md:text-2xl text-xl' />
                             <span className='text-[10px] md:text-md'>Çıkış</span>
                         </Link>
@@ -74,7 +81,7 @@ const Header = ({ setSearch }) => {
 
                 {/* md ekran altında responsive tasarım olarak görünecek */}
                 <Badge count={cart.cartItems.length} offset={[0, 0]} className='flex md:hidden'>
-                    <Link to="/cart" className='resp-menu-link flex flex-col '>
+                    <Link to="/cart" className={`menu-link ${pathname === "/cart" && "active" }`}>
                         <ShoppingCartOutlined className='text-2xl' />
                         <span className='text-[10px]'>Sepet</span>
                     </Link>

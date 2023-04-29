@@ -113,7 +113,7 @@ const handlePrint = useReactToPrint({
                                                     <img
                                                         src={item.img}
                                                         alt="product-img"
-                                                        className="w-18 h-16 object-cover"
+                                                        className="w-20 h-20 object-cover"
                                                     />
                                                 </td>
                                                 <td className="py-4">

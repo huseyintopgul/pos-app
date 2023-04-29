@@ -4,11 +4,14 @@ import { createSlice } from "@reduxjs/toolkit"
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
-        cartItems: [],
+        cartItems: localStorage.getItem("cart")
+            ? JSON.parse(localStorage.getItem("cart")).cartItems
+            : [],
+        total: localStorage.getItem("cart")
+        ? JSON.parse(localStorage.getItem("cart")).total
+        :0,
         tax: 18,
-        total: 0,
     },
-    // reducer içerisinde uygulama içerisinde gerçekleştireceğimiz fonksiyon ve metodlarımızı yazıyoruz.
     reducers: {
         // reducer alanı "actions" alanı olarak geçmektedir.
         // bu alan içerisinde yazılan bütün metodların export edilmesi gerekmektedir.!!!!!

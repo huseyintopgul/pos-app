@@ -16,7 +16,7 @@ const EditProduct = () => {
     useEffect(() => {
         const getProduct = async () => {
             try {
-                const response = await fetch("http://localhost:4000/api/products/get-all-products");
+                const response = await fetch(process.env.REACT_APP_SERVER_URL + "/api/products/get-all-products");
                 const data = await response.json();
                 setProducts(data)
             }
@@ -30,7 +30,7 @@ const EditProduct = () => {
     useEffect(() => {
         const getCategories = async () => {
             try {
-                const response = await fetch("http://localhost:4000/api/categories/get-all-categories");
+                const response = await fetch(process.env.REACT_APP_SERVER_URL + "/api/categories/get-all-categories");
                 const data = await response.json();
                 // data && operatörünü kullanarak setCategories içerisinde datayı MAP edip mevcut "ITEM" ve o itemın "VALUE" değerlerini return ederek
                 // AddProduct içerisinde kullanacağımız "SELECT" için veri oluşturuyoruz. Harici durumda setCategories(data) olarak state güncellemesi yapabiliriz
@@ -49,7 +49,7 @@ const EditProduct = () => {
     // product-table içerisinde yer alan SAVE butonu için kullandığımız ""productEdit"" fonksiyonu. 
     const productEdit = (values) => {
         try {
-            fetch("http://localhost:4000/api/products/update-product", {
+            fetch(process.env.REACT_APP_SERVER_URL + "/api/products/update-product", {
                 method: "PUT",
                 body: JSON.stringify({ ...values, productId: editProduct._id }),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -71,7 +71,7 @@ const EditProduct = () => {
     const productDel = (id) => {
         if (window.confirm("Emin Misiniz?")) {
             try {
-                fetch("http://localhost:4000/api/products/delete-product", {
+                fetch(process.env.REACT_APP_SERVER_URL + "/api/products/delete-product", {
                     method: "DELETE",
                     body: JSON.stringify({ productId: id }),
                     headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -121,7 +121,7 @@ const EditProduct = () => {
             // table içerisine return açmamızın nedeni; "RENDER" ile table içerisine harici butonlar eklememizdir
             render: (_, record) => {
                 return (
-                    <div className="render flex flex-row justify-around">
+                    <div className="render flex flex-row justify-around h-s">
                         <Button
                             onClick={() => {
                                 setIsEditModalOpen(true);

@@ -39,7 +39,7 @@ const HomePage = () => {
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/products/get-all-products");
+        const response = await fetch(process.env.REACT_APP_SERVER_URL + "/api/products/get-all-products");
         const data = await response.json();
         setProducts(data)
       }

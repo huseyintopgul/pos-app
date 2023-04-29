@@ -12,7 +12,7 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
     const onFinish = async (values) => {
         // onFinish fonksiyonu ile "Form" içersinde girilen value ları toplu olarak dışarı çekebiliyoruz
         try {
-            const res = await fetch("http://localhost:4000/api/invoices/add-invoice", {
+            const res = await fetch(process.env.REACT_APP_SERVER_URL + "/api/invoices/add-invoice", {
                 method: "POST",
                 body: JSON.stringify({
                     ...values,

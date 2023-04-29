@@ -8,7 +8,7 @@ const EditCategories = ({ isModalOpen, setIsModalOpen, categories, setCategories
     // kategory-table içerisinde yer alan SAVE butonu için kullandığımız ""categoryEdit"" fonksiyonu. 
     const categoryEdit = (values) => {
         try {
-            fetch("http://localhost:4000/api/categories/update-category", {
+            fetch(process.env.REACT_APP_SERVER_URL + "/api/categories/update-category", {
                 method: "PUT",
                 body: JSON.stringify({ ...values, categoryId: editRow._id }),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -29,7 +29,7 @@ const EditCategories = ({ isModalOpen, setIsModalOpen, categories, setCategories
 
     const categoryDel = (id) => {
         try {
-            fetch("http://localhost:4000/api/categories/delete-category", {
+            fetch(process.env.REACT_APP_SERVER_URL + "/api/categories/delete-category", {
                 method: "DELETE",
                 body: JSON.stringify({ categoryId: id }),
                 headers: { "Content-type": "application/json; charset=UTF-8" }

@@ -5,7 +5,7 @@ const AddProduct = ({ isAddModalOpen, setIsAddModalOpen, categories, products, s
 
     const productAdd = (values) => {
         try {
-            fetch("http://localhost:4000/api/products/add-product", {
+            fetch(process.env.REACT_APP_SERVER_URL + "/api/products/add-product", {
                 method: "POST",
                 body: JSON.stringify(values),
                 headers: { "Content-type": "application/json; charset=UTF-8" }

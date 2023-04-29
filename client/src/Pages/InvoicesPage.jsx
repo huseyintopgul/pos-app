@@ -30,7 +30,7 @@ const InvoicesPage = () => {
     useEffect(() => {
         const getInvoices = async (values) => {
             try {
-                const res = await fetch("http://localhost:4000/api/invoices/get-all-invoices");
+                const res = await fetch(process.env.REACT_APP_SERVER_URL + "/api/invoices/get-all-invoices");
                 const data = await res.json();
                 setInvoiceItems(data);
             }

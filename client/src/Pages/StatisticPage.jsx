@@ -17,7 +17,7 @@ const StatisticPage = () => {
 
         const getProducts = async () => {
             try {
-                const res = await fetch("http://localhost:4000/api/products/get-all-products");
+                const res = await fetch(process.env.REACT_APP_SERVER_URL + "/api/products/get-all-products");
                 const data = await res.json();
                 setProducts(data);
             }

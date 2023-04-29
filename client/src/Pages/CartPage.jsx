@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Header from "../Components/Header/Header";
-import { Table, Card, Button, message, } from "antd"
+import { Table, Card, Button, Input, message, Space } from "antd"
 import CreateInvoice from "../Components/Cart/CreateInvoice";
 import { useDispatch, useSelector } from "react-redux";
-import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { MinusCircleOutlined, PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { increase, decrease, deleteCart } from "../Redux/CartSlice";
+import Highlighter from 'react-highlight-words';
 
 
 const CartPage = () => {
+    const [searchText, setSearchText] = useState(" ");
+    const [searchedColumn, setSearchedColumn] = useState(" ");
+    const searchInput = useRef(null);
     const [isModalOpen, setIsModalOpen] = useState(false)
     // isModalOpen, setIsModalOpen statelerini prop olarak "CreateInvoice" Componentine aktarıyoruz
 
@@ -23,8 +27,119 @@ const CartPage = () => {
     // table area start
     const cart = useSelector((state) => state.cart);
     const dispatch = useDispatch();
+    const handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        setSearchText(selectedKeys[0]);
+        setSearchedColumn(dataIndex);
+    };
 
+    const handleReset = (clearFilters) => {
+        clearFilters();
+        setSearchText(" ");
+    };
 
+    const getColumnSearchProps = (dataIndex) => ({
+        filterDropdown: ({
+            setSelectedKeys,
+            selectedKeys,
+            confirm,
+            clearFilters,
+            close,
+        }) => (
+            <div
+                style={{
+                    padding: 8,
+                }}
+                onKeyDown={(e) => e.stopPropagation()}
+            >
+                <Input
+                    ref={searchInput}
+                    placeholder={`Search ${dataIndex}`}
+                    value={selectedKeys[0]}
+                    onChange={(e) =>
+                        setSelectedKeys(e.target.value ? [e.target.value] : [])
+                    }
+                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                    style={{
+                        marginBottom: 8,
+                        display: "block",
+                    }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{
+                            width: 90,
+                        }}
+                    >
+                        Search
+                    </Button>
+                    <Button
+                        onClick={() => clearFilters && handleReset(clearFilters)}
+                        size="small"
+                        style={{
+                            width: 90,
+                        }}
+                    >
+                        Reset
+                    </Button>
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            confirm({
+                                closeDropdown: false,
+                            });
+                            setSearchText(selectedKeys[0]);
+                            setSearchedColumn(dataIndex);
+                        }}
+                    >
+                        Filter
+                    </Button>
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            close();
+                        }}
+                    >
+                        close
+                    </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: (filtered) => (
+            <SearchOutlined
+                style={{
+                    color: filtered ? "#1890ff" : undefined,
+                }}
+            />
+        ),
+        onFilter: (value, record) =>
+            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownOpenChange: (visible) => {
+            if (visible) {
+                setTimeout(() => searchInput.current?.select(), 100);
+            }
+        },
+        render: (text) =>
+            searchedColumn === dataIndex ? (
+                <Highlighter
+                    highlightStyle={{
+                        backgroundColor: "#ffc069",
+                        padding: 0,
+                    }}
+                    searchWords={[searchText]}
+                    autoEscape
+                    textToHighlight={text ? text.toString() : ""}
+                />
+            ) : (
+                text
+            ),
+    });
     const columns = [
         {
             title: 'Ürün Görseli',
@@ -39,11 +154,13 @@ const CartPage = () => {
             title: 'Ürün Adı',
             dataIndex: 'title',
             key: 'title',
+            ...getColumnSearchProps('title'),
         },
         {
             title: 'Kategori',
             dataIndex: 'category',
             key: 'category',
+            ...getColumnSearchProps('category'),
         },
         {
             title: 'Ürün Fiyatı',
@@ -53,7 +170,8 @@ const CartPage = () => {
                 return (
                     <span> {text} ₺ </span>
                 )
-            }
+            },
+            sorter: (a, b) => a.price - b.price,
         },
         {
             title: 'Ürün Adeti',
@@ -121,16 +239,16 @@ const CartPage = () => {
         <>
             <Header />
             <div className="cart-page px-6">
-                <Table 
-                dataSource={cart.cartItems} 
-                columns={columns} 
-                bordered 
-                pagination={false}
-                scroll={{
-                    x:1200,
-                    y:400,
-                }} />
-                <div className="cart-totals flex justify-end px-6 mt-5">
+                <Table
+                    dataSource={cart.cartItems}
+                    columns={columns}
+                    bordered
+                    pagination={false}
+                    scroll={{
+                        x: 1200,
+                        y: 400,
+                    }} />
+                <div className="cart-totals flex justify-end py-10 px-6 ">
                     <Card className="w-[300px]">
                         <div className="ara-total flex flex-col">
                             <div className="ara-toplam py-1 px-3 flex flex-row justify-between">
@@ -148,7 +266,7 @@ const CartPage = () => {
                             <div className="ara-toplam py-1 px-3 flex flex-row justify-between font-bold">
                                 <span className="">Toplam Tutar</span>
                                 <span className="">
-                                    {((Number((cart.total)) + Number(cart.total) * Number(cart.tax)  / 100)).toFixed(2)} ₺
+                                    {((Number((cart.total)) + Number(cart.total) * Number(cart.tax) / 100)).toFixed(2)} ₺
                                 </span>
                             </div>
                             <div className="ara-toplam mt-3 px-3">
@@ -157,14 +275,14 @@ const CartPage = () => {
                                     className="w-full tracking-wider display-block"
                                     disabled={cart.cartItems.length === 0}
                                     onClick={() => setIsModalOpen(true)}>
-                                Siparişi Oluştur</Button>
+                                    Siparişi Oluştur</Button>
+                            </div>
                         </div>
-                </div>
-            </Card>
-        </div >
+                    </Card>
+                </div >
             </div >
-    <CreateInvoice isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
-{/* isModalOpen, setIsModalOpen statelerini props olarak "CreateInvoice" Componentine aktarıyoruz */ }
+            <CreateInvoice isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+            {/* isModalOpen, setIsModalOpen statelerini props olarak "CreateInvoice" Componentine aktarıyoruz */}
         </>
     )
 }

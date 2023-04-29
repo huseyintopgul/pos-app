@@ -24,6 +24,9 @@ body {
   .categories::-webkit-scrollbar {
     display: none;
   }
+  .products::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .menu-link:hover {

@@ -6,7 +6,7 @@ import { Spin, message } from 'antd';
 
 
 const StatisticPage = () => {
-    const [products, setProducts] = useState();
+    const [products, setProducts] = useState([]);
     const [data, setData] = useState([]);
     const user = JSON.parse(localStorage.getItem("systemUser"));
 
@@ -29,7 +29,7 @@ const StatisticPage = () => {
     }, [])
 
     const asyncFetch = () => {
-        fetch('http://localhost:4000/api/invoices/get-all-invoices')
+        fetch(process.env.REACT_APP_SERVER_URL + "/api/invoices/get-all-invoices")
             .then((response) => response.json())
             .then((json) => setData(json))
             .catch((error) => {

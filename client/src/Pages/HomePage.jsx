@@ -8,8 +8,8 @@ import { Spin, message } from "antd";
 
 
 const HomePage = () => {
-  const [products, setProducts] = useState();
-  const [categories, setCategories] = useState();
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   // categories useState'ini HomePage de tanımlamamızın nedeni; categories state lerini product componentine rahar propslayabilmek
   const [filtered, setFiltered] = useState([]);
   // kategori işlemleri alanı başlangıcı !!

@@ -258,7 +258,7 @@ const CartPage = () => {
                                 </span>
                             </div>
                             <div className="ara-toplam py-1 px-3 flex flex-row justify-between">
-                                <span className="">KDVgggg % {cart.tax} </span>
+                                <span className="">KDV % {cart.tax} </span>
                                 <span className="text-red-600">
                                     {(Number((cart.total * cart.tax)) / 100).toFixed(2)} ₺
                                 </span>

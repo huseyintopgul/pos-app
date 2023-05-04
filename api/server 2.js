@@ -1,9 +1,7 @@
 const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const logger = require("morgan");
+const cors = require("cors")
+const mongoose = require("mongoose")
 require("dotenv").config();
-
 
 // routes
 
@@ -28,14 +26,13 @@ const connect = async () => {
 
 
 // middlewares
-app.use(logger("dev"));
 app.use(express.json());
 app.use(cors());
 app.use("/api/categories", categoryRoute);
 app.use("/api/products", productRoute);
 app.use("/api/invoices", invoiceRoute);
 app.use("/api/users",userRoute);
-app.use("/api/auth", authRoute);
+app.use("/api/users", authRoute);
 
 
 

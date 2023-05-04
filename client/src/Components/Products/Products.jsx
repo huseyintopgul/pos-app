@@ -22,7 +22,7 @@ const Products = ({ categories, products, setProducts, filtered, search }) => {
 
             {
                 filtered
-                    // .filter((product) => product.title.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                    // .filter((products) => products.title.toLowerCase().includes(search.toLowerCase()))
                     .map((item) => (
                         <ProductItem item={item} key={item._id} />
                     ))

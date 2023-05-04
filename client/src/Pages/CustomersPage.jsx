@@ -6,7 +6,7 @@ import { SearchOutlined } from '@ant-design/icons';
 
 
 const CustomersPage = () => {
-    const [invoiceItems, setInvoiceItems] = useState();
+    const [invoiceItems, setInvoiceItems] = useState([]);
     const [searchText, setSearchText] = useState(" ");
     const [searchedColumn, setSearchedColumn] = useState(" ");
     const searchInput = useRef(null);
@@ -145,7 +145,7 @@ const CustomersPage = () => {
             title: 'Müşteri Adı',
             dataIndex: 'customerName',
             key: 'customerName',
-            ...getColumnSearchProps("custonerName")
+            ...getColumnSearchProps("customerName")
         },
         {
             title: 'Telefon Numarası',

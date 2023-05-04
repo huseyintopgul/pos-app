@@ -26,9 +26,16 @@ const cartSlice = createSlice({
                 state.cartItems.push(action.payload)
             }
             // find() metodu ile yapmış olduğumuz sorgu sonucunda ürün sepette varsa
-            // "quantity" değerini +1 yapıyoruz, aki durumda ürünü sepete ekliyoruz.
-            state.total += action.payload.price;
+            // "quantity" değerini +1 yapıyoruz, aki durumda ürünü sepete ekliyoruz.)
+            parseFloat(state.total += action.payload.price);
             // bu alanda sepete eklenen ürünlerin fiyat hesaplamasını yapıyoruz.
+
+
+            // let x = Number(state.total);
+            // state.total( x + Number(action.payload.price));
+            // console.log(x);
+
+
         },
         // "initialState" içerisindeki elementlerimize ulaşmak için "reducer" içerisinde 
         // oluşturduğumuz metodlara (state, action) değerlerini tanımlamamız gerekiyor.

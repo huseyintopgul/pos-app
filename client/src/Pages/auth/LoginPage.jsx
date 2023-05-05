@@ -1,4 +1,4 @@
-import { Button, Form, Input, Carousel, Checkbox, message } from "antd";
+import { Button, Form, Input, Carousel, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import AuthCarousel from "../../Components/Auth/AuthCarosel";
 import { useState } from "react";
@@ -71,12 +71,6 @@ const LoginPage = () => {
                             ]}
                         >
                             <Input.Password />
-                        </Form.Item>
-                        <Form.Item name={"remember"} valuePropName="checked">
-                            <div className="flex justify-between">
-                                <Checkbox> Beni Hatırla.</Checkbox>
-                                <Link to="/"> Şifremi Unuttum!</Link>
-                            </div>
                         </Form.Item>
                         <Form.Item>
                             <Button

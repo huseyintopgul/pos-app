@@ -174,7 +174,7 @@ const InvoicesPage = () => {
             render: (record) => {
                 return (<span> {record.substring(0, 10)} </span>)
             },
-            sorter: (a, b) => a.createdAt - b.createdAt,
+            sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
         },
         {
             title: 'Ödeme Yöntemi',
@@ -212,18 +212,18 @@ const InvoicesPage = () => {
             <h2 className="inv-hed text-4xl text-bold text-center mb-4">Faturalar</h2>
             {invoiceItems ? (
                 <div className="cart-page px-6">
-                <Table
-                    dataSource={invoiceItems}
-                    columns={columns}
-                    bordered
-                    pagination={false}
-                    rowKey="_id"
-                    scroll={{
-                        x: 1000,
-                        y: 400
-                    }} />
-            </div>
-            ):  <Spin size="large" className="absolute flex w-screen justify-center h-screen top-1/2"/>}
+                    <Table
+                        dataSource={invoiceItems}
+                        columns={columns}
+                        bordered
+                        pagination={false}
+                        rowKey="_id"
+                        scroll={{
+                            x: 1000,
+                            y: 400
+                        }} />
+                </div>
+            ) : <Spin size="large" className="absolute flex w-screen justify-center h-screen top-1/2" />}
             <PrintInvoices
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}

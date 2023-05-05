@@ -160,7 +160,7 @@ const CustomersPage = () => {
             render: (record) => {
                 return (<span>{record.substring(0, 10)} </span>)
             },
-            sorter: (a, b) => a.createdAt - b.createdAt,
+            sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
         },
     ];
     return (

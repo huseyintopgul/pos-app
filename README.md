@@ -57,20 +57,6 @@ $ npm run build // this will compile the react code using webpack and generate a
 $ npm run start // this will run the files in docs, this behavior is exactly the same how gh-pages will run your static site
 ```
 
-## Server-side usage(PORT: 10000)
-
-### Prepare your secret
-
-run the script at the first level:
-
-(You need to add a JWT_SECRET in .env to connect to MongoDB)
-
-```terminal
-// in the root level
-$ cd api
-$ echo "JWT_SECRET=YOUR_JWT_SECRET" >> src/.env
-```
-
 ### Start
 
 ```terminal

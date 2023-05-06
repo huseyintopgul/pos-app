@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const logger = require("morgan");
+const port = process.env.PORT || 6000;
 require("dotenv").config();
 
 
@@ -39,9 +40,9 @@ app.use("/api/auth", authRoute);
 
 
 
-app.listen(process.env.PORT, () => {
+app.listen(port, () => {
   connect();
-  console.log(` ${process.env.PORT} .port dinleniyor`);
+  console.log(` ${port} .port dinleniyor`);
 });
 
 
